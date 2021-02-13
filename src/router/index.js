@@ -8,6 +8,8 @@ import Profile from '../views/Profile.vue';
 
 import Todo from '../views/Todo.vue';
 
+import store from '../store/index';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -18,28 +20,33 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: Login,
   },
   {
     path: '/register',
-    name: 'register',
+    name: 'Register',
     component: Register,
   },
   {
     path: '/profile',
-    name: 'profile',
+    name: 'Profile',
     component: Profile,
   },
   {
     path: '/todo',
-    name: 'todo',
+    name: 'Todo',
     component: Todo,
   },
 ];
 
 const router = new VueRouter({
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && !store.getters.authenticated) next({ name: 'Login' });
+  else next();
 });
 
 export default router;
