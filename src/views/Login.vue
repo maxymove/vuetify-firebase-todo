@@ -1,14 +1,12 @@
 <template>
   <v-app>
-    <div class="login">
-      <v-card id="login-inner" class="mx-auto" width="500">
-        <v-text-field label="email"></v-text-field>
-        <v-text-field label="password"></v-text-field>
-        <v-card-actions
-          ><v-btn depressed color="#E53935"> login </v-btn></v-card-actions
-        >
-      </v-card>
-    </div>
+    <v-card class="mx-auto" width="500">
+      <v-text-field label="email"></v-text-field>
+      <v-text-field label="password"></v-text-field>
+      <v-card-actions
+        ><v-btn depressed class="mx-auto" > login </v-btn></v-card-actions
+      >
+    </v-card>
   </v-app>
 </template>
 
@@ -16,10 +14,12 @@
 export default {};
 </script>
 
-<style>
-.login {
-}
-#login-inner {
+<style scoped>
+.v-card {
   margin-top: 30px;
+}
+.v-text-field {
+  margin: auto;
+  width: 400px;
 }
 </style>
