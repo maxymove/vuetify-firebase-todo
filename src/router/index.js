@@ -5,7 +5,7 @@ import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Profile from '../views/Profile.vue';
-
+import Todos from '../views/Todos.vue';
 import Todo from '../views/Todo.vue';
 
 import store from '../store/index';
@@ -32,6 +32,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
+  },
+  {
+    path: '/app',
+    name: 'Todos',
+    component: Todos,
   },
   {
     path: '/todo',

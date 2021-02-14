@@ -6,11 +6,12 @@
         <v-tab :to="{ name: 'Login' }"> login </v-tab>
         <v-tab :to="{ name: 'Register' }"> register </v-tab>
         <!-- <v-spacer></v-spacer> -->
-        <v-tab :to="{ name: 'Todo' }"> todo </v-tab>
+        <v-tab :to="{ name: 'Todos' }"> app </v-tab>
       </v-tabs>
     </v-card>
     <div style="text-align: center" v-if="authenticated">
       Welcome, {{currentUser.displayName}}
+      <br>
       <v-btn @click="signOut">sign out</v-btn>
     </div>
 

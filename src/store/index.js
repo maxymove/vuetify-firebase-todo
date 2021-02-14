@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import firebase from 'firebase/app';
+import db from '../plugins/firebase';
 
 Vue.use(Vuex);
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
       authenticated: false,
       data: null,
     },
+    todos: [],
   },
   getters: {
     currentUser(state) {
@@ -18,6 +20,10 @@ export default new Vuex.Store({
     },
     authenticated(state) {
       return state.user.authenticated;
+    },
+    //
+    currentTodos(state) {
+      return state.todos;
     },
   },
   mutations: {
@@ -29,8 +35,13 @@ export default new Vuex.Store({
       state.user.data = null;
       state.user.authenticated = false;
     },
+    //
+    retrieveTodos(state, payload) {
+      state.todos = payload;
+    },
   },
   actions: {
+    // AUTHENTICATION
     signUpAction(context, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then((userCredential) => {
@@ -94,6 +105,45 @@ export default new Vuex.Store({
           // ...
         }
       });
+    },
+
+    // other
+    addTodoAction(context, payload) {
+      db.collection('users')
+        .doc(this.getters.currentUser.displayName)
+        .collection('todos')
+        .add({
+          title: payload.newTodo,
+          completed: false,
+          timestamp: new Date().toISOString(),
+          subTasks: [],
+        })
+        .then((docRef) => {
+          // this docRef.id is the unique id of this todo object
+          console.log('Document written with ID: ', docRef.id);
+          this.dispatch('retrieveTodosAction');
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error);
+        });
+    },
+    retrieveTodosAction(context) {
+      const tmpArray = [];
+      db.collection('users')
+        .doc(this.getters.currentUser.displayName)
+        .collection('todos')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const todoObj = {
+              id: doc.id,
+              title: doc.data().title,
+              completed: doc.data().completed,
+            };
+            tmpArray.push(todoObj);
+          });
+        });
+      context.commit('retrieveTodos', tmpArray);
     },
   },
   modules: {
