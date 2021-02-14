@@ -25,6 +25,10 @@ export default new Vuex.Store({
       state.user.data = payload;
       state.user.authenticated = payload !== null;
     },
+    clearUser(state) {
+      state.user.data = null;
+      state.user.authenticated = false;
+    },
   },
   actions: {
     signUpAction(context, payload) {
@@ -32,28 +36,22 @@ export default new Vuex.Store({
         .then((userCredential) => {
           // Signed in
           const { user } = userCredential;
-          // console.log(user.email);
           console.log(user.uid);
-          // console.log(user.metadata);
           // ...
           const { currentUser } = firebase.auth();
-
           currentUser.updateProfile({
             displayName: payload.displayName,
-            // photoURL: 'https://example.com/jane-q-user/profile.jpg',
           }).then(() => {
             // Update successful.
-            console.log(user.displayName);
+            // this is to immedietyly sign the user out
+            // because we only wants to register and do other stuff
+            context.commit('clearUser');
           }).catch((error) => {
-            // An error happened.
             console.log(error);
           });
         })
         .catch((error) => {
           console.log(error);
-          // const errorCode = error.code;
-          // const errorMessage = error.message;
-          // ..
         });
     },
     signInAction(context, payload) {
@@ -71,6 +69,31 @@ export default new Vuex.Store({
           // const errorMessage = error.message;
           console.log(error);
         });
+    },
+    signOutAction(context) {
+      firebase.auth().signOut().then(() => {
+        // Sign-out successful.
+        context.commit('clearUser');
+      }).catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
+    },
+    onAuthChangedAction(context) {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // console.log(user.email);
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          // const { uid } = user;
+          // ...
+          context.commit('setUser', user);
+          // BUG = when sign up, it will also sign in
+        } else {
+          // User is signed out
+          // ...
+        }
+      });
     },
   },
   modules: {

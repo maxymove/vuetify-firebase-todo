@@ -11,6 +11,7 @@
     </v-card>
     <div style="text-align: center" v-if="authenticated">
       Welcome, {{currentUser.displayName}}
+      <v-btn @click="signOut">sign out</v-btn>
     </div>
 
     <router-view></router-view>
@@ -18,12 +19,19 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
     };
+  },
+  methods: {
+    ...mapActions(['signOutAction']),
+    signOut() {
+      this.signOutAction();
+    },
+
   },
   computed: {
     ...mapGetters(['currentUser', 'authenticated']),
