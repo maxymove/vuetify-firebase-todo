@@ -113,10 +113,12 @@ export default new Vuex.Store({
         .doc(this.getters.currentUser.displayName)
         .collection('todos')
         .add({
-          title: payload.newTodo,
-          completed: false,
+          text: payload.newTodo,
+          // completed: false,
           timestamp: new Date().toISOString(),
-          subTasks: [],
+          // subTasks: [],
+          // editing: false,
+          // textCached: '',
         })
         .then((docRef) => {
           // this docRef.id is the unique id of this todo object
@@ -128,23 +130,32 @@ export default new Vuex.Store({
         });
     },
     retrieveTodosAction(context) {
-      const tmpArray = [];
-      db.collection('users')
-        .doc(this.getters.currentUser.displayName)
-        .collection('todos')
-        .get()
+      db.collection('users').doc(this.getters.currentUser).collection('todos').get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            const todoObj = {
-              id: doc.id,
-              title: doc.data().title,
-              completed: doc.data().completed,
-            };
-            tmpArray.push(todoObj);
+          // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, ' => ', doc.data());
           });
         });
-      context.commit('retrieveTodos', tmpArray);
+
+      // const tmpArray = [];
+      // db.collection('users')
+      //   .doc(this.getters.currentUser.displayName)
+      //   .collection('todos')
+      //   .get()
+      //   .then((querySnapshot) => {
+      //     querySnapshot.forEach((doc) => {
+      //       const todoObj = {
+      //         timestamp: doc.timestamp,
+      //         id: doc.id,
+
+      //       };
+      //       tmpArray.push(todoObj);
+      //     });
+      //   });
+      // context.commit('retrieveTodos', tmpArray);
     },
+
   },
   modules: {
   },

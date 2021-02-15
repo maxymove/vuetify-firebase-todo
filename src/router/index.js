@@ -6,7 +6,8 @@ import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Profile from '../views/Profile.vue';
 import Todos from '../views/Todos.vue';
-import Todo from '../views/Todo.vue';
+import Todo from '../components/Todo.vue';
+import TodoTable from '../components/TodoTable.vue';
 
 import store from '../store/index';
 
@@ -42,6 +43,11 @@ const routes = [
     path: '/todo',
     name: 'Todo',
     component: Todo,
+  },
+  {
+    path: '/table',
+    name: 'Table',
+    component: TodoTable,
   },
 ];
 

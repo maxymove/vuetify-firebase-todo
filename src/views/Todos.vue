@@ -5,13 +5,10 @@
       <v-card-actions class="mx-auto"
         ><v-btn depressed class="mx-auto" @click="addTodo">
           add a new todo
-        </v-btn></v-card-actions
-      >
+        </v-btn></v-card-actions>
     </v-card>
-    <v-card class="mx-auto" width="500">
-        {{currentTodos}}
-    </v-card>
-    <v-btn @click="retrieveTodos">update todos</v-btn>
+    <br>
+    {{ currentTodos }}
   </v-app>
 </template>
 
@@ -19,6 +16,8 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
+  components: {
+  },
   data() {
     return {
       newTodo: '',
@@ -33,7 +32,7 @@ export default {
   methods: {
     ...mapActions(['addTodoAction', 'retrieveTodosAction']),
     addTodo() {
-      this.addTodoAction({ newTodo: this.newTodo });
+      this.addTodoAction({ text: this.newTodo });
       this.newTodo = '';
     },
     retrieveTodos() {

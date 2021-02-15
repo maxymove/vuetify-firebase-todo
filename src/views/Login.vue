@@ -9,7 +9,6 @@
       ></v-text-field>
       <v-card-actions
         ><v-btn depressed class="mx-auto" @click="signIn" > login </v-btn>
-        <v-btn depressed class="mx-auto"> logout </v-btn>
       </v-card-actions>
     </v-card>
   </v-app>

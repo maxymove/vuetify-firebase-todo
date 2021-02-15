@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div>Todo page</div>
+    {{todo.title}}
   </v-app>
 </template>
 
